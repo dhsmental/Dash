@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Analítico & Síntese Avançada - Direitos Humanos e Saúde Mental</title>
+    <title>Análise Integrada de Indicadores & Sínteses de Tutores do Curso de Direitos Humanos e Saúde Mental</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -31,23 +31,23 @@
             </div>
 
             <nav class="space-y-1.5">
-                <a href="#graficos" class="flex items-center space-x-3 px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium transition">
+                <a href="#graficos" id="nav-graficos" class="nav-link flex items-center space-x-3 px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium transition">
                     <i class="fa-solid fa-chart-pie w-5"></i>
                     <span>Indicadores</span>
                 </a>
-                <a href="#termometro" class="flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                <a href="#termometro" id="nav-termometro" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
                     <i class="fa-solid fa-fire w-5"></i>
                     <span>Termômetro Temático</span>
                 </a>
-                <a href="#sintese-ebook" class="flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                <a href="#sintese-ebook" id="nav-sintese-ebook" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
                     <i class="fa-solid fa-book-open w-5"></i>
                     <span>Síntese Qualitativa</span>
                 </a>
-                <a href="#sintese" class="flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                <a href="#sintese" id="nav-sintese" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
                     <i class="fa-solid fa-comments w-5"></i>
                     <span>Relatórios Detalhados</span>
                 </a>
-                <a href="#metricas" class="flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                <a href="#metricas" id="nav-metricas" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
                     <i class="fa-solid fa-table w-5"></i>
                     <span>Tabela Estatística</span>
                 </a>
@@ -79,8 +79,8 @@
     <main class="flex-1 flex flex-col h-full overflow-y-auto">
         <header class="bg-slate-900/60 backdrop-blur-md border-b border-slate-800 px-6 py-6 flex flex-col items-center justify-center text-center sticky top-0 z-20">
             <div>
-                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Análise Integrada de Indicadores & Sínteses</h2>
-                <p class="text-xs sm:text-sm text-slate-400 mt-1">Passe o mouse sobre os gráficos para visualizar insights detalhados • </p>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Análise Integrada de Indicadores & Sínteses de Tutores  </h2>
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">Análise das repostas de 55 tutores (até o dia 23/08/26) • Passe o mouse sobre os gráficos para interagir  </p>
             </div>
         </header>
 
@@ -303,7 +303,6 @@
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-700/40 text-[11px] text-slate-400 flex justify-between items-center">
                             <span>Relato de Tutor (Região Sul)</span>
-                            
                         </div>
                     </div>
 
@@ -317,7 +316,6 @@
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-700/40 text-[11px] text-slate-400 flex justify-between items-center">
                             <span>Relato de Tutor (Região Sudeste)</span>
-                            
                         </div>
                     </div>
 
@@ -331,7 +329,6 @@
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-700/40 text-[11px] text-slate-400 flex justify-between items-center">
                             <span>Relato de Tutor (Região Nordeste)</span>
-                            
                         </div>
                     </div>
                 </div>
@@ -619,17 +616,47 @@
                 }
             });
 
-            // Refresh Button Animation
-            document.getElementById('refreshBtn').addEventListener('click', () => {
-                const btn = document.getElementById('refreshBtn');
-                btn.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i><span>Sincronizando...</span>';
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i><span>Atualizado!</span>';
-                    setTimeout(() => {
-                        btn.innerHTML = '<i class="fa-solid fa-rotate"></i><span>Atualizar Dados</span>';
-                    }, 2000);
-                }, 800);
+            // Lógica robusta para atualizar o menu lateral por posição de scroll e cliques
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = ['graficos', 'termometro', 'sintese-ebook', 'sintese', 'metricas'];
+
+            function setActiveMenu(activeId) {
+                navLinks.forEach(link => {
+                    link.className = "nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition";
+                });
+                const activeLink = document.getElementById(`nav-${activeId}`);
+                if (activeLink) {
+                    activeLink.className = "nav-link flex items-center space-x-3 px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium transition";
+                }
+            }
+
+            // Evento de clique direto para mudar imediatamente a cor do menu selecionado
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const targetId = this.getAttribute('href').substring(1);
+                    setActiveMenu(targetId);
+                });
             });
+
+            // Monitoramento da rolagem da área de conteúdo (`main`)
+            const mainContainer = document.querySelector('main');
+            if (mainContainer) {
+                mainContainer.addEventListener('scroll', () => {
+                    let current = 'graficos';
+                    
+                    sections.forEach(sectionId => {
+                        const section = document.getElementById(sectionId);
+                        if (section) {
+                            const sectionTop = section.offsetTop - 150;
+                            if (mainContainer.scrollTop >= sectionTop) {
+                                current = sectionId;
+                            }
+                        }
+                    });
+                    
+                    setActiveMenu(current);
+                });
+            }
         });
     </script>
 </body>
